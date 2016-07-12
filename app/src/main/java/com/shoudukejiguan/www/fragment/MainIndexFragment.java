@@ -151,7 +151,6 @@ public class MainIndexFragment extends MainBaseFragment {
 
     private void addImage(String url) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((Util.getWeight() / 4) - 20, (Util.getWeight() / 4) - 20);
-        params.weight = 1;
         params.leftMargin = 20;
         ImageView iv = new ImageView(getContext());
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
