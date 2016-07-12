@@ -9,12 +9,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dengmingzhi on 16/5/11.
@@ -40,13 +43,8 @@ public class RotationViewPager extends ViewPager {
         if (viewCount <= 1) {
             return;
         }
-        int current = getCurrentItem();
-        if (current == views.size() - 1) {
-            current = 0;
-        } else {
-            current += 1;
-        }
-        setCurrentItem(current);
+
+        setCurrentItem(getCurrentItem() + 1);
         handler.sendEmptyMessageDelayed(1, 2500);
     }
 
@@ -65,18 +63,17 @@ public class RotationViewPager extends ViewPager {
      */
     public void setViews(List<View> views) {
         this.views = views;
-        if (views != null && views.size() > 0) {
+        if (views != null && (viewCount = views.size()) > 0) {
             setAdapter(mAdapter = new MyAdapter());
-            if ((viewCount = views.size()) > 1) {
-                handler.sendEmptyMessageDelayed(1, 2500);
-            }
+            setCurrentItem(viewCount * 100000);
+            handler.sendEmptyMessageDelayed(1, 2500);
         }
+
 
     }
 
 
     public void setUrls(List<String> list) {
-
         if (list != null && list.size() > 0) {
             List<View> mViews = new ArrayList<>();
             for (String url : list) {
@@ -109,10 +106,9 @@ public class RotationViewPager extends ViewPager {
 
 
     class MyAdapter extends PagerAdapter {
-
         @Override
         public int getCount() {
-            return views.size();
+            return Integer.MAX_VALUE;
         }
 
         @Override
@@ -122,13 +118,23 @@ public class RotationViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            container.addView(views.get(position), 0);
-            return views.get(position);
+            position %= viewCount;
+            if (position < 0) {
+                position = viewCount + position;
+            }
+            View v = views.get(position);
+            ViewParent vp = v.getParent();
+            if (vp != null) {
+                ViewGroup parent = (ViewGroup) vp;
+                parent.removeView(v);
+            }
+            container.addView(v, 0);
+            return v;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(views.get(position));
+//            ((RotationViewPager) container).removeView(views.get(position % views.size()));
         }
     }
 

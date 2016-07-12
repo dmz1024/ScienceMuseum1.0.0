@@ -35,18 +35,17 @@ public class RotationRelativeLayout extends RelativeLayout {
         View.inflate(getContext(), R.layout.layout_rotation, this);
         viewPager = (RotationViewPager) findViewById(R.id.rvp_rotation);
         indicator = (CircleIndicator) findViewById(R.id.indicator);
-
     }
 
 
-    public void setUrls(List<String> list){
+    public void setUrls(List<String> list) {
         viewPager.setUrls(list);
-        indicator.setViewPager(viewPager);
+//        indicator.setViewPager(viewPager);
     }
 
-    public void setViews(List<View> list){
+    public void setViews(List<View> list) {
         viewPager.setViews(list);
-        indicator.setViewPager(viewPager);
+//        indicator.setViewPager(viewPager);
     }
 
 }

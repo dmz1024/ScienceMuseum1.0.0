@@ -31,7 +31,6 @@ public class MainIndexFragment extends MainBaseFragment {
         List<String> urlList = new ArrayList<String>();
         urlList.add("http://cdn.duitang.com/uploads/item/201412/04/20141204163409_Tdusf.thumb.700_0.jpeg");
         urlList.add("http://img1.v.tmcdn.net/img/h000/h08/img20120822145108301270.jpg");
-        urlList.add("http://p1.gexing.com/shaitu/20120729/1434/5014d993268f5.jpg");
         urlList.add("http://img5.duitang.com/uploads/item/201411/29/20141129233121_GQPWn.thumb.700_0.jpeg");
         layout_rotation.setUrls(urlList);
         gv_center.setAdapter(new GridViewCenterAdapter(getContext(), titles, images));

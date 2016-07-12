@@ -3,6 +3,7 @@
     xmlns:tool="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="#eee">
 
     <com.flyco.tablayout.CommonTabLayout
@@ -25,4 +26,6 @@
         android:layout_height="match_parent"
         android:layout_above="@id/tab_bottom"
         android:background="#f1f1f1" />
+
+
 </RelativeLayout>
