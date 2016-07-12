@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
-    private String[] mTitles = {"首页", "消息", "联系人", "更多"};
+    private String[] mTitles = {"首页", "票务预订", "参观指引", "个人中心"};
     private int[] mIconUnselectIds = {
             R.mipmap.icon_main_index, R.mipmap.icon_main_passage_order,
             R.mipmap.icon_main_visit_guide, R.mipmap.icon_main_personal_center};

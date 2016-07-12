@@ -1,13 +1,16 @@
 package com.shoudukejiguan.www.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.example.meng.zxingscan.QRcodeActivity;
 import com.shoudukejiguan.www.R;
 import com.shoudukejiguan.www.activity.MoreNewsActivity;
 import com.shoudukejiguan.www.adapter.GridViewCenterAdapter;
@@ -56,6 +59,17 @@ public class MainIndexFragment extends MainBaseFragment {
         gv_center.setAdapter(new GridViewCenterAdapter(getContext(), titles, images));
         tip_notice.setTipList(urlList);
 
+        gv_center.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i){
+                    case 3:
+                        sao1sao();
+                        break;
+                }
+            }
+        });
+
         List<IndexNews> listNews = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             IndexNews indexNews = new IndexNews("标题：" + i, "2016-09-016");
@@ -68,6 +82,16 @@ public class MainIndexFragment extends MainBaseFragment {
         }
 
         educationView(urlList);
+    }
+
+    /**
+     * 扫一扫
+     */
+    private void sao1sao() {
+        // 调用ZXIng开源项目源码  扫描二维码
+        Intent openCameraIntent = new Intent(getContext(),
+                QRcodeActivity.class);
+        startActivityForResult(openCameraIntent, 0);
     }
 
     @Override
