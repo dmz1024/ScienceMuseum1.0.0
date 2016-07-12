@@ -11,13 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dengmingzhi on 16/5/11.
@@ -119,9 +115,7 @@ public class RotationViewPager extends ViewPager {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             position %= viewCount;
-            if (position < 0) {
-                position = viewCount + position;
-            }
+
             View v = views.get(position);
             ViewParent vp = v.getParent();
             if (vp != null) {

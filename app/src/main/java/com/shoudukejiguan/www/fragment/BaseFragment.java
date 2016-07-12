@@ -1,13 +1,14 @@
 package com.shoudukejiguan.www.fragment;
 
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 /**
  * Created by dengmingzhi on 16/6/16.
  */
-public class BaseFragment extends Fragment implements PopupWindow.OnDismissListener {
+public class BaseFragment extends Fragment implements PopupWindow.OnDismissListener,View.OnClickListener {
 
     @Override
     public void onDismiss() {
@@ -34,5 +35,10 @@ public class BaseFragment extends Fragment implements PopupWindow.OnDismissListe
     public int px2Dp(float px) {
         final float scale = getResources().getDisplayMetrics().density;
         return (int) (px / scale + 0.5f);
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }
