@@ -3,6 +3,7 @@ package com.shoudukejiguan.www.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.shoudukejiguan.www.R;
 import com.shoudukejiguan.www.api.APiHttp;
 import com.shoudukejiguan.www.entity.BaseLvEntity;
 import com.shoudukejiguan.www.entity.Data;
+import com.shoudukejiguan.www.entity.News;
 import com.shoudukejiguan.www.view.MyToast;
 
 import org.json.JSONException;
@@ -32,7 +34,7 @@ import java.util.Map;
 /**
  * Created by dengmingzhi on 16/6/14.
  */
-public abstract class ShowDataBaseFragment<T extends BaseLvEntity, D extends Data, A extends BaseRecyclerAdapter> extends BaseFragment implements XRefreshView.XRefreshViewListener {
+public abstract class ListDataBaseFragment<T extends BaseLvEntity, D extends Data, A extends BaseRecyclerAdapter> extends BaseFragment implements XRefreshView.XRefreshViewListener {
     private XRefreshView xRefreshView;
     protected RecyclerView rv_base;
     private RelativeLayout rl_load;
@@ -50,11 +52,16 @@ public abstract class ShowDataBaseFragment<T extends BaseLvEntity, D extends Dat
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return initView();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
             size = bundle.getString("size");
         }
-        return initView();
     }
 
     /**
@@ -235,86 +242,106 @@ public abstract class ShowDataBaseFragment<T extends BaseLvEntity, D extends Dat
     public void initData(final int type) {
         map.put("page", page + "");
         map.put("size", size);
-        APiHttp api = new APiHttp(getUrl(), getMap(map), getContext()) {
-            @Override
-            protected void success(String json) {
-                try {
-                    JSONObject object = new JSONObject(json);
-                    int result = object.getInt("result");
-                    if (result == 0) {
-                        T t = mGson.fromJson(json, getTClass());
-                        if (t.data.size() == 0) {
-                            page = oldPage;
-                        }
-                        if (type == 2) {
-                            totalList.clear();
-                        }
-                        totalList.addAll(t.data);
-                        if (totalList.size() > 0) {
-                            showView(1);
-                        } else if (totalList.size() == 0) {
-                            showView(3);
-                        }
-
-                        mAdapter.notifyDataSetChanged();
-                    } else {
-                        page = oldPage;
-                    }
-
-                    if (type == 1) {
-                        xRefreshView.stopLoadMore();
-                    } else {
-                        xRefreshView.stopRefresh();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    page = oldPage;
-                    if (type == 1) {
-                        xRefreshView.stopLoadMore();
-                    } else {
-                        xRefreshView.stopRefresh();
-                    }
-                }
-            }
-
-            @Override
-            protected void noNetWork() {
-                if (totalList.size() > 0) {
-                    MyToast.showToast("网络连接失败!");
-                } else {
-                    showView(2);
-                }
-                page = oldPage;
-                currentType = type;
-                if (type == 1) {
-                    xRefreshView.stopLoadMore();
-                } else {
-                    xRefreshView.stopRefresh();
-                }
-            }
-
-            @Override
-            protected void error() {
-                if (totalList.size() > 0) {
-                    MyToast.showToast("服务器异常!");
-                } else {
-                    showView(2);
-                }
-                page = oldPage;
-                if (type == 1) {
-                    xRefreshView.stopLoadMore();
-                } else {
-                    xRefreshView.stopRefresh();
-                }
-            }
-        };
-
-        if (getMethod()) {
-            api.post();
-        } else {
-            api.get();
+        if (type == 2) {
+            totalList.clear();
         }
+
+        for (int i = 0; i < Integer.parseInt(size); i++) {
+            totalList.add((D) new Data());
+        }
+
+        mAdapter.notifyDataSetChanged();
+        if (totalList.size() > 0) {
+            showView(1);
+        } else if (totalList.size() == 0) {
+            showView(3);
+        }
+        if (type == 1) {
+            xRefreshView.stopLoadMore();
+        } else {
+            xRefreshView.stopRefresh();
+        }
+
+//        APiHttp api = new APiHttp(getUrl(), getMap(map), getContext()) {
+//            @Override
+//            protected void success(String json) {
+//                try {
+//                    JSONObject object = new JSONObject(json);
+//                    int result = object.getInt("result");
+//                    if (result == 0) {
+//                        T t = mGson.fromJson(json, getTClass());
+//                        if (t.data.size() == 0) {
+//                            page = oldPage;
+//                        }
+//                        if (type == 2) {
+//                            totalList.clear();
+//                        }
+//                        totalList.addAll(t.data);
+//                        if (totalList.size() > 0) {
+//                            showView(1);
+//                        } else if (totalList.size() == 0) {
+//                            showView(3);
+//                        }
+//
+//                        mAdapter.notifyDataSetChanged();
+//                    } else {
+//                        page = oldPage;
+//                    }
+//
+//                    if (type == 1) {
+//                        xRefreshView.stopLoadMore();
+//                    } else {
+//                        xRefreshView.stopRefresh();
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    page = oldPage;
+//                    if (type == 1) {
+//                        xRefreshView.stopLoadMore();
+//                    } else {
+//                        xRefreshView.stopRefresh();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            protected void noNetWork() {
+//                if (totalList.size() > 0) {
+//                    MyToast.showToast("网络连接失败!");
+//                } else {
+//                    showView(2);
+//                }
+//                page = oldPage;
+//                currentType = type;
+//                if (type == 1) {
+//                    xRefreshView.stopLoadMore();
+//                } else {
+//                    xRefreshView.stopRefresh();
+//                }
+//            }
+//
+//            @Override
+//            protected void error() {
+//                if (totalList.size() > 0) {
+//                    MyToast.showToast("服务器异常!");
+//                } else {
+//                    showView(2);
+//                }
+//                page = oldPage;
+//                if (type == 1) {
+//                    xRefreshView.stopLoadMore();
+//                } else {
+//                    xRefreshView.stopRefresh();
+//                }
+//            }
+//        };
+//
+//        if (getMethod()) {
+//            api.post();
+//        } else {
+//            api.get();
+//        }
 
     }
 

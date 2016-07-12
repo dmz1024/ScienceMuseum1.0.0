@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.shoudukejiguan.www.R;
+import com.shoudukejiguan.www.activity.MoreNewsActivity;
 import com.shoudukejiguan.www.adapter.GridViewCenterAdapter;
 import com.shoudukejiguan.www.adapter.IndexEducationAdapter;
 import com.shoudukejiguan.www.adapter.IndexNewsAdapter;
@@ -108,7 +109,6 @@ public class MainIndexFragment extends MainBaseFragment {
     }
 
 
-
     /**
      * 更多教育
      */
@@ -135,7 +135,7 @@ public class MainIndexFragment extends MainBaseFragment {
      * 更多新闻资讯
      */
     private void moreNews() {
-
+        skip(MoreNewsActivity.class);
     }
 
     @Override
